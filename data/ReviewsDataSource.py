@@ -1,5 +1,5 @@
 import sqlite3
-import DbUtils
+
 from Review import Review
 
 
@@ -38,3 +38,26 @@ def insert(reviews):
     conn.commit()
     c.close()
     print('insert ' + str(len(reviews)) + ' row.')
+
+
+def queryTodayReviews(reviews):
+    conn = sqlite3.connect('reviews.db')
+
+    try:
+        c = conn.cursor()
+        for row in c.execute("select nickName,content,reviewTime,appStore,versionCode,packageName,score from reviews WHERE date(reviews.reviewTime) = date('now')"):
+            review = Review()
+            review.appStore='myapp'
+            review.nickName = row[0]
+            review.content=row[1]
+            review.reviewTime = row[2]
+            review.appStore=row[3]
+            review.versionCode=row[4]
+            review.packageName=row[5]
+            review.score=row[6]
+            reviews.append(review)
+    except BaseException as e:
+        print('sql error : ' + e.__cause__)
+
+    c.close()
+    print('queryTodayReviews ' + str(len(reviews)) + ' row.')
