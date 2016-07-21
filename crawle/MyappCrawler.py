@@ -68,15 +68,12 @@ class MyappCrawler(CrawlModel):
             try:
                 print('u开始加载第' + str(self.page) + '页')
                 self.get_page(str(self.page))
-                self.page += 1
             except BaseException as e:
                 print('无法链接应用宝！')
                 print(e)
+            finally:
+                self.page += 1
                 # self.enable = False
         if not self.enable:
             print('应用宝load完毕')
             # self.today_reviews()
-
-
-crawlModel = MyappCrawler()
-crawlModel.start()

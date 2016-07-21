@@ -37,43 +37,44 @@ class CrawlModel:
         # _thread.start_new_thread(self.LoadPage, ())
         self.load_reviews()
 
-
     def today_reviews(self):
         todayReviews = []
         ReviewsDataSource.queryTodayReviews(todayReviews)
-        html = """\
-        <html>
-            <head></head>
-            <body>
-            <p>
-            <table border="1">
-                 <tr>
-                     <th>ID</th>
-                     <th>评分</th>
-                     <th>评论</th>
-                     <th>版本</th>
-                     <th>包名</th>
-                     <th>来源</th>
-                     <th>评论时间</th>
-                     <th>昵称</th>
-                </tr>
-            """
-        index = 1;
-        for todayReview in todayReviews:
-            tr = """ <tr>
-                     <td>""" + str(index) + """</td>""" + """
-                     <td>""" + str(todayReview.score) + """</td>
-                     <td>""" + todayReview.content + """</td>
-                     <td>""" + str(todayReview.versionCode) + """</td>
-                     <td>""" + todayReview.packageName + """</td>
-                     <td>""" + todayReview.appStore + """</td>
-                     <td>""" + todayReview.reviewTime + """</td>
-                     <td>""" + todayReview.nickName + """</td>
-                </tr>"""
-            html += tr
-            index += 1
-        html += """ </table></p></body>
-            </html>"""
+        content = 'no new review'
+        if todayReviews:
+            content = """\
+            <html>
+                <head></head>
+                <body>
+                <p>
+                <table border="1">
+                     <tr>
+                         <th>ID</th>
+                         <th>评分</th>
+                         <th>评论</th>
+                         <th>版本</th>
+                         <th>包名</th>
+                         <th>来源</th>
+                         <th>评论时间</th>
+                         <th>昵称</th>
+                    </tr>
+                """
+            index = 1;
+            for todayReview in todayReviews:
+                tr = """ <tr>
+                         <td>""" + str(index) + """</td>""" + """
+                         <td>""" + str(todayReview.score) + """</td>
+                         <td>""" + todayReview.content + """</td>
+                         <td>""" + str(todayReview.versionCode) + """</td>
+                         <td>""" + todayReview.packageName + """</td>
+                         <td>""" + todayReview.appStore + """</td>
+                         <td>""" + todayReview.reviewTime + """</td>
+                         <td>""" + todayReview.nickName + """</td>
+                    </tr>"""
+                content += tr
+                index += 1
+                content += """ </table></p></body>
+                </html>"""
 
-        SendEmail.send_email("Daily reviews(" + time.strftime("%Y-%m-%d", time.localtime()) + ")", html, 'enum@foxmail.com',
-                            'cc@cc.com;cc2@cc.com')
+        SendEmail.send_email("Daily reviews(" + time.strftime("%Y-%m-%d", time.localtime()) + ")", content,
+                             'enum@foxmail.com;zongbin.tu@msxf.com')

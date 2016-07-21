@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-def send_email(subject, content, to, cc):
+def send_email(subject, content, to):
     sender = 'pythontu@163.com'
     passwd = 'abc1234567'
     smtp = 'smtp.163.com'
@@ -12,7 +12,7 @@ def send_email(subject, content, to, cc):
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = to
-    msg['Cc'] = cc
+    # msg['Cc'] = cc
 
     partHtml = MIMEText(content, 'html')
     msg.attach(partHtml)
@@ -35,6 +35,3 @@ def send_email(subject, content, to, cc):
     server.quit()
 
     return isSccuss
-
-
-send_email('test', 'title', 'enum@foxmail.com', 'zongbin.tu@msxf.com')
